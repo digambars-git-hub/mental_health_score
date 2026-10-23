@@ -5,7 +5,14 @@ from pydantic import BaseModel, Field
 import pandas as pd
 from typing import Literal
 
-model = joblib.load("D:\\SSD\\Coding\\Student Mental Health Prediction\\Menta_Health_Model.pkl")
+from pathlib import Path
+import joblib
+
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "Menta_Health_Model.pkl"
+
+model = joblib.load(MODEL_PATH)
+
 top_countries = ['Other', 'India', 'USA', 'Canada', 'Australia', 'UK', 'Germany', 'Mexico', 'Turkey', 'France']
 
 app = FastAPI()
