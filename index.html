@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Mental Health Score Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <span class="brand">Student Mental Health Prediction</span>
+      <span class="topbar-note">Score estimator</span>
+    </header>
+
+    <main class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Prediction form</p>
+        <h1 id="page-title">Student mental health score</h1>
+        <p class="intro-copy">Enter the student's details and daily habits to get a model-generated score.</p>
+        <div class="reassurance">
+          <span class="reassurance-icon" aria-hidden="true">✳</span>
+          <p>This estimate is not a diagnosis or a substitute for professional care.</p>
+        </div>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="form-card" aria-labelledby="form-title">
+          <div class="form-heading">
+            <div>
+              <p class="section-kicker">YOUR DAILY SNAPSHOT</p>
+              <h2 id="form-title">Tell us about you</h2>
+            </div>
+            <span class="time-estimate">~ 2 min</span>
+          </div>
+
+          <form id="prediction-form">
+          <div class="form-section">
+            <h3><span class="step-number">01</span> About you</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>Age</span>
+                <input name="Age" type="number" min="10" max="100" step="1" placeholder="e.g. 20" required>
+              </label>
+              <label class="field">
+                <span>Gender</span>
+                <select name="Gender" required>
+                  <option value="" disabled selected>Select gender</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Country</span>
+                <select name="Country" required>
+                  <option value="" disabled selected>Select country</option>
+                  <option>India</option>
+                  <option>USA</option>
+                  <option>Canada</option>
+                  <option>Australia</option>
+                  <option>UK</option>
+                  <option>Germany</option>
+                  <option>Mexico</option>
+                  <option>Turkey</option>
+                  <option>France</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Academic level</span>
+                <select name="Academic_Level" required>
+                  <option value="" disabled selected>Select level</option>
+                  <option>High School</option>
+                  <option>Undergraduate</option>
+                  <option>Graduate</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><span class="step-number">02</span> Your social media habits</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>Most-used platform</span>
+                <select name="Most_Used_Platform" required>
+                  <option value="" disabled selected>Choose a platform</option>
+                  <option>Facebook</option>
+                  <option>LinkedIn</option>
+                  <option>Instagram</option>
+                  <option>Snapchat</option>
+                  <option>Twitter</option>
+                  <option>YouTube</option>
+                  <option>TikTok</option>
+                  <option>LINE</option>
+                  <option>KakaoTalk</option>
+                  <option>VKontakte</option>
+                  <option>WhatsApp</option>
+                  <option>WeChat</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Main purpose</span>
+                <select name="Purpose_Of_Use" required>
+                  <option value="" disabled selected>Choose a purpose</option>
+                  <option>Networking</option>
+                  <option>Education</option>
+                  <option>Entertainment</option>
+                  <option>News</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Daily social media use <small>hours</small></span>
+                <input name="Avg_Daily_Usage_Hours" type="number" min="0" max="24" step="0.1" placeholder="e.g. 3.5" required>
+              </label>
+              <label class="field">
+                <span>Daily phone unlocks <small>times</small></span>
+                <input name="Daily_Unlocks" type="number" min="0" step="1" placeholder="e.g. 50" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3><span class="step-number">03</span> Your daily routine</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>Study time <small>hours / day</small></span>
+                <input name="Study_Hours" type="number" min="0" max="24" step="0.1" placeholder="e.g. 5" required>
+              </label>
+              <label class="field">
+                <span>Physical activity <small>hours / day</small></span>
+                <input name="Physical_Activity_Hours" type="number" min="0" max="24" step="0.1" placeholder="e.g. 1" required>
+              </label>
+              <label class="field">
+                <span>Sleep <small>hours / night</small></span>
+                <input name="Sleep_Hours_Per_Night" type="number" min="0" max="24" step="0.1" placeholder="e.g. 8" required>
+              </label>
+              <label class="field">
+                <span>Stress level</span>
+                <select name="Stress_Level" required>
+                  <option value="" disabled selected>Select level</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Very High</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+            <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+            <button class="submit-button" type="submit">
+              <span>Get my estimate</span>
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+            <p class="privacy-note"><span aria-hidden="true">◇</span> Your answers are sent to the prediction service and are not saved by this page.</p>
+          </form>
+        </section>
+
+        <aside class="sidebar" aria-label="Prediction score and information">
+          <section id="result" class="sidebar-card score-card" aria-live="polite">
+            <p class="section-kicker">PREDICTION</p>
+            <h2>Your score</h2>
+            <div id="score-meter" class="score-meter" role="img" aria-label="Score not calculated yet">
+              <div class="score-bubble">
+                <span id="score-value">—</span>
+              </div>
+            </div>
+            <div class="score-endpoints" aria-hidden="true"><span>0</span><span>10</span></div>
+            <p id="score-note" class="score-note">Complete the form to calculate your estimate.</p>
+          </section>
+          <section class="sidebar-card scale-card">
+            <h3>Score scale</h3>
+            <div class="scale-track" aria-hidden="true"><span></span></div>
+            <p>The model returns a score from 0 to 10. It is an estimate, not a clinical assessment.</p>
+          </section>
+          <section class="sidebar-card privacy-card">
+            <h3>Your information</h3>
+            <p>Answers are sent to the prediction service to calculate this result.</p>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="page-footer">
+        <span>Student Mental Health Prediction</span>
+      </footer>
+    </main>
+  </body>
+</html>
