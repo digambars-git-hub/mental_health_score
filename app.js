@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:2000/predict";
+const API_URL = "https://mental-health-score-60ej.onrender.com";
 
 const form = document.querySelector("#prediction-form");
 const submitButton = form.querySelector('button[type="submit"]');
