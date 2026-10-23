@@ -3,10 +3,13 @@ const API_URL = "https://mental-health-score-60ej.onrender.com/predict";
 const form = document.querySelector("#prediction-form");
 const submitButton = form.querySelector('button[type="submit"]');
 const feedback = document.querySelector("#feedback");
-const result = document.querySelector("#result");
 const scoreValue = document.querySelector("#score-value");
 const scoreMeter = document.querySelector("#score-meter");
+const scoreBubble = document.querySelector(".score-bubble");
 const scoreNote = document.querySelector("#score-note");
+const themeToggle = document.querySelector("#theme-toggle");
+const themeIcon = themeToggle.querySelector(".theme-icon");
+const themeLabel = themeToggle.querySelector(".theme-label");
 
 function displayError(message) {
   feedback.textContent = message;
@@ -17,6 +20,40 @@ function clearError() {
   feedback.textContent = "";
   feedback.hidden = true;
 }
+
+function updateTheme(theme) {
+  const dark = theme === "dark";
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  themeToggle.setAttribute("aria-pressed", String(dark));
+  themeToggle.setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} theme`);
+  themeIcon.textContent = dark ? "☀" : "☾";
+  themeLabel.textContent = dark ? "Light theme" : "Dark mode";
+}
+
+try {
+  updateTheme(localStorage.getItem("theme") === "dark" ? "dark" : "light");
+} catch {
+  updateTheme("light");
+}
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  try {
+    localStorage.setItem("theme", nextTheme);
+  } catch {
+    // The selected theme still applies for the current page when storage is unavailable.
+  }
+  updateTheme(nextTheme);
+});
+
+form.addEventListener("change", (event) => {
+  if (event.target.matches('input[type="radio"]')) {
+    const fieldset = event.target.closest("fieldset");
+    fieldset.querySelectorAll(".choice").forEach((choice) => {
+      choice.classList.toggle("selected", choice.querySelector("input").checked);
+    });
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -74,15 +111,18 @@ form.addEventListener("submit", async (event) => {
 
     scoreValue.textContent = score.toFixed(2);
     const normalizedScore = Math.min(10, Math.max(0, score));
-    const bubbleSize = 46 + (normalizedScore / 10) * 92;
-    scoreMeter.style.setProperty("--bubble-size", `${bubbleSize}px`);
+    const maxBubbleSize = Math.max(30, Math.min(scoreMeter.clientWidth, scoreMeter.clientHeight) - 24);
+    const bubbleSize = Math.min(maxBubbleSize, 46 + (normalizedScore / 10) * 92);
+    scoreBubble.style.width = `${bubbleSize}px`;
+    scoreBubble.style.height = `${bubbleSize}px`;
+    scoreBubble.style.setProperty("--bubble-size", `${bubbleSize}px`);
+    scoreMeter.style.setProperty("--score-hue", `${normalizedScore * 12}`);
     scoreNote.textContent = "Model-generated estimate. This is not a diagnosis or clinical assessment.";
     scoreMeter.setAttribute("aria-label", `Predicted score: ${score.toFixed(2)} out of 10`);
-    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
   } catch (error) {
     displayError(
       error instanceof TypeError
-        ? "Could not connect to the prediction service. Check that the API is running on port 2000 and try again."
+        ? "Could not connect to the prediction service. Check that the API is running and try again."
         : error.message,
     );
   } finally {
